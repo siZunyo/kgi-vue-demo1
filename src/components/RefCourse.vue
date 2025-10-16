@@ -1,0 +1,53 @@
+<template>
+    <div>
+        <h1>destruct reactive object</h1>
+        <h1>reactive for course object</h1>
+        <p>{{ course }}</p>
+        <p>course name:{{ course.courseName }}</p>
+        <p>attendee:{{ course.attendee }}</p>
+        <p>is online?{{ course.isOnline }}</p>
+        <hr />
+        <h1>refs會跟著變的</h1>
+        <p>{{ courseName }}</p>
+        <p>{{ attendee }}</p>
+        <p>{{ isOnline }}</p>
+    </div>
+</template>
+
+<script>
+import { reactive, toRef, toRefs,isRef } from 'vue';
+export default {
+    setup() {
+        const course = reactive({
+            courseName: "VUE",
+            attendee: 10,
+            isOnline: false
+        })
+
+        const { courseName, attendee, isOnline } = course
+        console.log(courseName, attendee, isOnline)
+        const x = toRefs(course)
+        console.log("x is ref?",isRef(x))
+        console.log("x.attendee is ref?",isRef(x.attendee))
+        console.log("x.courseName is ref?",isRef(x.courseName))
+        console.log("x.isOnline is ref?",isRef(x.isOnline))
+        //const {courseName, attendee, isOnline} = toRefs(course)
+        console.log(x.courseName, x.attendee, x.isOnline)
+        setTimeout(() => {
+            course.courseName = "Vue實戰"
+            course.attendee += 5
+            course.isOnline = true
+            setTimeout(() => { 
+                x.courseName.value="Vue full stack 實戰"
+                x.attendee.value += 20
+                x.isOnline.value = false
+            }, 3000)
+        }, 3000)
+
+        //return { course, courseName, attendee, isOnline }
+        return { course, ...toRefs(course) }
+    }
+}
+</script>
+
+<style lang="scss" scoped></style>
