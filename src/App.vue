@@ -5,7 +5,7 @@
 <script>
 export default {
   setup() {
-    let userName = "KGI"
+    let userName = "KGI123"
     setTimeout(() => {
       userName = "ABC"
       console.log("username=", userName)
